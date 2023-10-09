@@ -35,29 +35,12 @@ fn message_to_periodic(message: &str) -> Option<String> {
         return Some(String::new());
     }
 
-    if let Some(val) = PTABLE.iter().find(|x| message[0..1].eq(&x.to_lowercase())) {
-        let rest = message_to_periodic(&message[1..]);
-
-        if let Some(rest) = rest {
-            let mut result = val.to_string();
-            result.push_str(&rest);
-
-            return Some(result);
-        }
-    }
-
-    if message.len() < 2 {
-        return None;
-    }
-
-    if let Some(val) = PTABLE.iter().find(|x| message[0..2].eq(&x.to_lowercase())) {
-        let rest = message_to_periodic(&message[2..]);
-
-        if let Some(rest) = rest {
-            let mut result = val.to_string();
-            result.push_str(&rest);
-
-            return Some(result);
+    for p in PTABLE.iter() {
+        if message.starts_with(&p.to_lowercase()) {
+            if let Some(mut result) = message_to_periodic(&message[p.len()..]) {
+                result.insert_str(0, p);
+                return Some(result);
+            }
         }
     }
 

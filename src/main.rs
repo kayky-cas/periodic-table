@@ -1,5 +1,3 @@
-use std::io::{self, stdin};
-
 const PTABLE: [&str; 118] = [
     "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl",
     "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As",
@@ -47,11 +45,10 @@ fn message_to_periodic(message: &str) -> Option<String> {
     None
 }
 
-fn main() -> io::Result<()> {
-    let mut message = String::new();
-    stdin().read_line(&mut message)?;
-
-    let message: String = message
+fn main() {
+    let message: String = std::env::args()
+        .nth(1)
+        .expect("Nenhuma mensagem foi passada como argumento")
         .to_lowercase()
         .chars()
         .filter(|c| c.is_alphabetic())
@@ -64,6 +61,4 @@ fn main() -> io::Result<()> {
         Some(result) => println!("{}", result),
         None => println!("Combinação não encontrada"),
     };
-
-    Ok(())
 }

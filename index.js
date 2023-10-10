@@ -135,11 +135,17 @@ function messageToPeriodic(message) {
   return null;
 }
 
-const message = "naag";
+const message = process.argv[2];
+
+if (message === undefined) {
+  console.log("Não foi passado nenhum argumento");
+  process.exit(1);
+}
+
 const result = messageToPeriodic(message);
 
 if (result === null) {
-  console.log("No solution");
+  console.log("Sem solução");
 } else {
   console.log(result);
 }

@@ -14,7 +14,7 @@ fn message_to_periodic(message: &str) -> Option<Vec<String>> {
         return Some(Vec::new());
     }
 
-    for p in PTABLE.iter() {
+    for p in PTABLE {
         if message.starts_with(&p.to_lowercase()) {
             if let Some(mut result) = message_to_periodic(&message[p.len()..]) {
                 result.push(p.to_string());

@@ -121,14 +121,14 @@ const ptable = [
 
 function messageToPeriodic(message) {
   if (message.length === 0) {
-    return "";
+    return [];
   }
 
   for (const val of ptable) {
     if (message.startsWith(val.toLowerCase())) {
       const result = messageToPeriodic(message.substring(val.length));
       if (result !== null) {
-        return val + result;
+        return [val, ...result];
       }
     }
   }
@@ -142,7 +142,7 @@ if (message === undefined) {
   process.exit(1);
 }
 
-const result = messageToPeriodic(message);
+const result = messageToPeriodic(message.toLowerCase());
 
 if (result === null) {
   console.log("Sem solução");

@@ -1,3 +1,5 @@
+use std::collections::LinkedList;
+
 const PTABLE: [&str; 118] = [
     "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl",
     "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As",
@@ -9,21 +11,21 @@ const PTABLE: [&str; 118] = [
     "Fl", "Mc", "Lv", "Ts", "Og",
 ];
 
-fn message_to_periodic(message: &str) -> Option<Vec<String>> {
+fn message_to_periodic(message: &str) -> Option<LinkedList<&'static str>> {
     if message.is_empty() {
-        return Some(Vec::new());
+        return Some(LinkedList::new());
     }
 
     for p in PTABLE {
         if message.starts_with(&p.to_lowercase()) {
             if let Some(mut result) = message_to_periodic(&message[p.len()..]) {
-                result.push(p.to_string());
+                result.push_front(p);
                 return Some(result);
             }
         }
     }
 
-    None
+    return None;
 }
 
 fn main() {
@@ -35,13 +37,8 @@ fn main() {
         .filter(|c| c.is_alphabetic())
         .collect();
 
-    let result = message_to_periodic(&message);
-
-    match result {
-        Some(result) => {
-            let result = result.iter().rev().collect::<Vec<_>>();
-            println!("{:?}", result)
-        }
+    match message_to_periodic(&message) {
+        Some(result) => println!("{:?}", result),
         None => println!("Combinação não encontrada"),
     };
 }

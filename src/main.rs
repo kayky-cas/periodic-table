@@ -9,34 +9,15 @@ const PTABLE: [&str; 118] = [
     "Fl", "Mc", "Lv", "Ts", "Og",
 ];
 
-fn substitute_accents(letter: char) -> char {
-    match letter {
-        'á' => 'a',
-        'à' => 'a',
-        'ã' => 'a',
-        'â' => 'a',
-        'é' => 'e',
-        'ê' => 'e',
-        'í' => 'i',
-        'ó' => 'o',
-        'ô' => 'o',
-        'õ' => 'o',
-        'ú' => 'u',
-        'ü' => 'u',
-        'ç' => 'c',
-        _ => letter,
-    }
-}
-
-fn message_to_periodic(message: &str) -> Option<String> {
+fn message_to_periodic(message: &str) -> Option<Vec<String>> {
     if message.is_empty() {
-        return Some(String::new());
+        return Some(Vec::new());
     }
 
     for p in PTABLE.iter() {
         if message.starts_with(&p.to_lowercase()) {
             if let Some(mut result) = message_to_periodic(&message[p.len()..]) {
-                result.insert_str(0, p);
+                result.push(p.to_string());
                 return Some(result);
             }
         }
@@ -52,13 +33,15 @@ fn main() {
         .to_lowercase()
         .chars()
         .filter(|c| c.is_alphabetic())
-        .map(substitute_accents)
         .collect();
 
     let result = message_to_periodic(&message);
 
     match result {
-        Some(result) => println!("{}", result),
+        Some(result) => {
+            let result = result.iter().rev().collect::<Vec<_>>();
+            println!("{:?}", result)
+        }
         None => println!("Combinação não encontrada"),
     };
 }
